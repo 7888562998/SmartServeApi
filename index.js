@@ -3,8 +3,6 @@ const studentRouter = require("./routes/student");
 const registerRouter = require("./routes/UserRegister");
 const customerRouter = require("./routes/customer");
 const barCodeRouter = require("./routes/BarCode");
-const Payment = require("./routes/Payment");
-
 
 var cors = require("cors");
 const { connectDB } = require("./src/db/conn");
@@ -19,8 +17,6 @@ app.use("/api/v1", studentRouter);
 app.use("/api/v1", registerRouter);
 app.use("/api/v1", customerRouter);
 app.use("/api/v1", barCodeRouter);
-app.use("/api/v1", Payment);
-
 
 
 const start = () => {
