@@ -4,9 +4,11 @@ const registerRouter = require("./routes/UserRegister");
 const customerRouter = require("./routes/customer");
 const barCodeRouter = require("./routes/BarCode");
 
+
 var cors = require("cors");
 const { connectDB } = require("./src/db/conn");
 const StudentDetail = require("./src/models/student");
+const Payment = require("./routes/Payment");
 
 const app = express();
 const port = process.env.Port || 5000;
@@ -17,6 +19,8 @@ app.use("/api/v1", studentRouter);
 app.use("/api/v1", registerRouter);
 app.use("/api/v1", customerRouter);
 app.use("/api/v1", barCodeRouter);
+app.use("/api/v1", Payment);
+
 
 
 const start = () => {
