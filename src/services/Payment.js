@@ -1,18 +1,25 @@
-// const Razorpay = require("razorpay");
-// const crypto = require("crypto");
+const Razorpay = require("razorpay");
+const crypto = require("crypto");
 require("dotenv").config();
 
-// const razorpay = new Razorpay({
-//   key_id: process.env.RAZORPAY_KEY_ID,
-//   key_secret: process.env.RAZORPAY_KEY_SECRET,
-// });
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
+});
 
 const CreateOrder = async (req, res) => {
   try {
-    return res.status(200).json({
-      success: true,
-      message: "Order created successfully"
-    });
+    const { amount } = req.body;
+
+    const options = {
+      amount: amount * 100, // INR in paise
+      currency: "INR",
+      receipt: "receipt_" + Date.now(),
+    };
+
+    const order = await razorpay.orders.create(options);
+
+    res.json(order);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -20,10 +27,30 @@ const CreateOrder = async (req, res) => {
 
 const VerifyPayment = async (req, res) => {
   try {
-    return res.status(200).json({
-      success: true,
-      message: "Order created successfully"
-    });
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+    } = req.body;
+console.log(" req.body", req.body)
+    const body = razorpay_order_id + "|" + razorpay_payment_id;
+
+    const expectedSignature = crypto
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+      .update(body)
+      .digest("hex");
+
+    if (expectedSignature === razorpay_signature) {
+      return res.json({
+        success: true,
+        message: "Payment verified",
+      });
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid signature",
+      });
+    }
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
