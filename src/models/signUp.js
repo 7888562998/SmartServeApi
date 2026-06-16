@@ -32,6 +32,13 @@ const signUpSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+   otp: {
+    type: String,
+    trim:true
+  },
+   otpExpire : {
+    type: Date,
+  },
 });
 
 //Creating collection in data base
