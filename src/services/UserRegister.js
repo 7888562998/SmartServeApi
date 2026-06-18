@@ -41,7 +41,7 @@ const logIn = async (req, res) => {
     if (user.length > 0) {
       console.log(user, "user1111");
       jwt.sign(
-        { user: user[0] },
+        { user: user },
         process.env.SECRET_KEY,
         (error, token) => {
           console.log("token", token);
