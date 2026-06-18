@@ -1,4 +1,6 @@
 const FoodProduct = require("../models/FoodProduct");
+const TablesStatus = require("../models/TablesStatus");
+
 const cloudinary = require("cloudinary").v2;
 require("dotenv").config();
 
@@ -73,7 +75,34 @@ const getProductList = async (req, res) => {
   }
 };
 
+
+const getProductListByBarCode = async (req, res) => {
+  try {
+    const { barcode } = req.params;
+    console.log("Barcode:", barcode);
+    const tableDetail = await TablesStatus.findOne({ barcode: barcode });
+    console.log("tableDetail",tableDetail)
+    const products = await FoodProduct.find({
+      restaurantId: tableDetail.restaurantId, // ✅ FILTER HERE
+    }).sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: products.length,
+      data: products,
+    });
+  } catch (error) {
+    console.error("Get Products Error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: error.message || "Failed to fetch products",
+    });
+  }
+};
+
 module.exports = {
   UploadProduct,
   getProductList,
+  getProductListByBarCode
 };
