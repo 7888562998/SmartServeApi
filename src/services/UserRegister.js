@@ -39,9 +39,9 @@ const logIn = async (req, res) => {
     console.log("body", req.body);
     const user = await registration.find(req.body);
     if (user.length > 0) {
-      console.log(user, "user1111");
+      console.log(user[0], "user1111");
       jwt.sign(
-        { user: user },
+        { user: user[0] },
         process.env.SECRET_KEY,
         (error, token) => {
           console.log("token", token);
