@@ -14,7 +14,7 @@ const verifyToken = (req, res, next) => {
       return res.status(500).send({ message: "Failed to authenticate token." });
     }
     // Save the decoded token payload to request for use in other routes
-    req.userId = decoded.user[0]._id;
+    req.userId = decoded.user._id;
     console.log("req.userId",req.userId)
     // req.userId=decoded.uesr
     next();
