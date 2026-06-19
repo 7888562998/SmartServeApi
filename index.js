@@ -4,6 +4,7 @@ const registerRouter = require("./routes/UserRegister");
 const customerRouter = require("./routes/customer");
 const barCodeRouter = require("./routes/BarCode");
 const Products = require("./routes/Products");
+const TableManagement = require("./routes/TableManagement");
 
 var cors = require("cors");
 const { connectDB } = require("./src/db/conn");
@@ -21,6 +22,7 @@ app.use("/api/v1", customerRouter);
 app.use("/api/v1", barCodeRouter);
 app.use("/api/v1", Payment);
 app.use("/api/v1", Products);
+app.use("/api/v1", TableManagement);
 
 const start = () => {
   connectDB()
